@@ -1,13 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ApolloClient } from "apollo-client";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { createHttpLink } from "apollo-link-http";
+import { ApolloProvider } from "@apollo/react-hooks";
 
+const api_url = createHttpLink({
+  uri: "https://graphqlzero.almansi.me/api"
+})
+
+const client = new ApolloClient({
+  link: api_url,
+  cache: new InMemoryCache()
+})
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <React.Fragment>
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
+  </React.Fragment>,
   document.getElementById('root')
 );
 
